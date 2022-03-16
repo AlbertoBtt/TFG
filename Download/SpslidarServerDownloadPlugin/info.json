@@ -1,0 +1,23 @@
+{
+	"type" : "Standard",
+	"name" : "Spslidar Server Download Plugin",
+	"icon" : ":/CC/plugin/SpslidarServerDownloadPlugin/images/icon.png",
+	"description": "Download plugin for Spslidar Server",
+  "authors": [
+    {
+      "name": "EDF R&D"
+    }
+  ],
+  "maintainers": [
+    {
+      "name": "Alberto Beteta Fernández",
+      "email": "abf00017@red.ujaen.es"
+    }
+  ],
+  "references": [
+    {
+      "text": "Documentation",
+      "url": "http://www.cloudcompare.org/doc/wiki/index.php?title=Surface_of_Revolution_Analysis_(plugin)"
+    }
+  ]
+}
