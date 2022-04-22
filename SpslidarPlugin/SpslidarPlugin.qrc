@@ -1,0 +1,8 @@
+<RCC>
+  <qresource prefix="/CC/plugin/SpslidarPlugin" >
+    <file>images/upload.png</file>
+    <file>images/icon.png</file>
+    <file>images/download.png</file>
+    <file>info.json</file>
+  </qresource>
+</RCC>

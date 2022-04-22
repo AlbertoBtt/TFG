@@ -1,0 +1,695 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>spslidarUploadDlg</class>
+ <widget class="QDialog" name="spslidarUploadDlg">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>763</width>
+    <height>582</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Spslidar Server Upload</string>
+  </property>
+  <widget class="QStackedWidget" name="stackedWidget">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>761</width>
+     <height>581</height>
+    </rect>
+   </property>
+   <widget class="QWidget" name="page">
+    <widget class="QLabel" name="step1">
+     <property name="geometry">
+      <rect>
+       <x>60</x>
+       <y>50</y>
+       <width>231</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Step 1: Select a Server</string>
+     </property>
+    </widget>
+    <widget class="QListWidget" name="serverList">
+     <property name="geometry">
+      <rect>
+       <x>60</x>
+       <y>120</y>
+       <width>351</width>
+       <height>351</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="name">
+     <property name="geometry">
+      <rect>
+       <x>430</x>
+       <y>190</y>
+       <width>63</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Name:</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="serverName">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>430</x>
+       <y>220</y>
+       <width>311</width>
+       <height>28</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="ip">
+     <property name="geometry">
+      <rect>
+       <x>430</x>
+       <y>270</y>
+       <width>81</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>IP or URL:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="port">
+     <property name="geometry">
+      <rect>
+       <x>660</x>
+       <y>270</y>
+       <width>63</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Port:</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="serverIP">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>430</x>
+       <y>300</y>
+       <width>221</width>
+       <height>28</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="serverPort">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>660</x>
+       <y>300</y>
+       <width>81</width>
+       <height>28</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="deleteButton">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>460</x>
+       <y>370</y>
+       <width>83</width>
+       <height>29</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Delete</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="saveButton">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>620</x>
+       <y>370</y>
+       <width>83</width>
+       <height>29</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Save</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="serverCancel">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>498</y>
+       <width>151</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>13</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Cancel</string>
+     </property>
+     <property name="autoDefault">
+      <bool>false</bool>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="serverContinue">
+     <property name="geometry">
+      <rect>
+       <x>500</x>
+       <y>500</y>
+       <width>151</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>13</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Continue</string>
+     </property>
+     <property name="autoDefault">
+      <bool>false</bool>
+     </property>
+     <property name="default">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="page_2">
+    <widget class="QLabel" name="step2">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>30</y>
+       <width>251</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Step 2: Select a Dataset</string>
+     </property>
+    </widget>
+    <widget class="QListWidget" name="workspacesList">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>130</y>
+       <width>301</width>
+       <height>201</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QListWidget" name="datasetsList">
+     <property name="geometry">
+      <rect>
+       <x>400</x>
+       <y>130</y>
+       <width>301</width>
+       <height>201</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="workspace">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>80</y>
+       <width>101</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Workspace</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="dataset">
+     <property name="geometry">
+      <rect>
+       <x>520</x>
+       <y>80</y>
+       <width>71</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Dataset</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="back">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>510</y>
+       <width>121</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>13</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Back</string>
+     </property>
+     <property name="autoDefault">
+      <bool>false</bool>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="confirm">
+     <property name="geometry">
+      <rect>
+       <x>510</x>
+       <y>510</y>
+       <width>121</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>13</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Confirm</string>
+     </property>
+     <property name="autoDefault">
+      <bool>false</bool>
+     </property>
+     <property name="default">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="workspaceNameLine">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>340</y>
+       <width>211</width>
+       <height>28</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="wokspaceName">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>340</y>
+       <width>63</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Name:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="workspaceDescription">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>380</y>
+       <width>91</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Description:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="workspaceCell">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>460</y>
+       <width>71</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Cell Size:</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="workspaceCellLine">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>460</y>
+       <width>211</width>
+       <height>28</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QPlainTextEdit" name="workspaceDestriptionText">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>380</y>
+       <width>211</width>
+       <height>71</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="datasetNameLine">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>490</x>
+       <y>340</y>
+       <width>211</width>
+       <height>28</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="datasetDescription">
+     <property name="geometry">
+      <rect>
+       <x>400</x>
+       <y>380</y>
+       <width>91</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Description:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="datasetSize">
+     <property name="geometry">
+      <rect>
+       <x>400</x>
+       <y>450</y>
+       <width>71</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Datablock</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="datasetSizeLine">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>490</x>
+       <y>460</y>
+       <width>211</width>
+       <height>28</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="datasetName">
+     <property name="geometry">
+      <rect>
+       <x>400</x>
+       <y>340</y>
+       <width>63</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Name:</string>
+     </property>
+    </widget>
+    <widget class="QPlainTextEdit" name="datasetDescriptionText">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>490</x>
+       <y>380</y>
+       <width>211</width>
+       <height>71</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="datasetSize2">
+     <property name="geometry">
+      <rect>
+       <x>400</x>
+       <y>470</y>
+       <width>71</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>size:</string>
+     </property>
+    </widget>
+   </widget>
+  </widget>
+ </widget>
+ <tabstops>
+  <tabstop>serverName</tabstop>
+  <tabstop>serverIP</tabstop>
+  <tabstop>serverPort</tabstop>
+  <tabstop>deleteButton</tabstop>
+  <tabstop>saveButton</tabstop>
+  <tabstop>serverCancel</tabstop>
+  <tabstop>serverContinue</tabstop>
+  <tabstop>workspacesList</tabstop>
+  <tabstop>datasetsList</tabstop>
+  <tabstop>back</tabstop>
+  <tabstop>confirm</tabstop>
+  <tabstop>serverList</tabstop>
+  <tabstop>workspaceNameLine</tabstop>
+  <tabstop>workspaceDestriptionText</tabstop>
+  <tabstop>workspaceCellLine</tabstop>
+  <tabstop>datasetNameLine</tabstop>
+  <tabstop>datasetSizeLine</tabstop>
+  <tabstop>datasetDescriptionText</tabstop>
+ </tabstops>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>serverList</sender>
+   <signal>itemClicked(QListWidgetItem*)</signal>
+   <receiver>spslidarUploadDlg</receiver>
+   <slot>serverClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>255</x>
+     <y>221</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>762</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>deleteButton</sender>
+   <signal>clicked()</signal>
+   <receiver>spslidarUploadDlg</receiver>
+   <slot>deleteServer()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>516</x>
+     <y>387</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>762</x>
+     <y>389</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>saveButton</sender>
+   <signal>clicked()</signal>
+   <receiver>spslidarUploadDlg</receiver>
+   <slot>saveServer()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>661</x>
+     <y>376</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>762</x>
+     <y>438</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>serverContinue</sender>
+   <signal>clicked()</signal>
+   <receiver>spslidarUploadDlg</receiver>
+   <slot>serverContinue()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>534</x>
+     <y>521</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>762</x>
+     <y>540</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>serverCancel</sender>
+   <signal>clicked()</signal>
+   <receiver>spslidarUploadDlg</receiver>
+   <slot>cancel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>209</x>
+     <y>516</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>762</x>
+     <y>566</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>workspacesList</sender>
+   <signal>itemClicked(QListWidgetItem*)</signal>
+   <receiver>spslidarUploadDlg</receiver>
+   <slot>clickWorkspace()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>223</x>
+     <y>417</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>762</x>
+     <y>503</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>back</sender>
+   <signal>clicked()</signal>
+   <receiver>spslidarUploadDlg</receiver>
+   <slot>comeBack()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>227</x>
+     <y>517</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>762</x>
+     <y>533</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>datasetsList</sender>
+   <signal>itemClicked(QListWidgetItem*)</signal>
+   <receiver>spslidarUploadDlg</receiver>
+   <slot>clickDataset()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>609</x>
+     <y>283</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1032</x>
+     <y>262</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>confirm</sender>
+   <signal>clicked()</signal>
+   <receiver>spslidarUploadDlg</receiver>
+   <slot>finish()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>566</x>
+     <y>543</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>850</x>
+     <y>553</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>cancel()</slot>
+  <slot>serverContinue()</slot>
+  <slot>deleteServer()</slot>
+  <slot>saveServer()</slot>
+  <slot>serverClicked()</slot>
+  <slot>clickWorkspace()</slot>
+  <slot>comeBack()</slot>
+  <slot>clickDataset()</slot>
+  <slot>finish()</slot>
+ </slots>
+</ui>
