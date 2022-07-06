@@ -8,7 +8,7 @@
 
  //##########################################################################
  //#                                                                        #
- //#                CLOUDCOMPARE PLUGIN: SpslidarServerDownloadPlugin       #
+ //#                CLOUDCOMPARE PLUGIN: SpslidarPlugin                     #
  //#                                                                        #
  //#  This program is free software; you can redistribute it and/or modify  #
  //#  it under the terms of the GNU General Public License as published by  #
@@ -19,7 +19,11 @@
  //#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         #
  //#  GNU General Public License for more details.                          #
  //#                                                                        #
- //#                   COPYRIGHT: Universidad de Jaen                       #
+ //#						     COPYRIGHT:									#
+ //#					 Alberto Beteta Fernandez							#                     
+ //#				   Rafael Jesús Segura Sánchez							#
+ //#				    Antonio Jesús Rueda Ruíz							#
+ //#                  Carlos Javier Ogayar Anguita                          #
  //#                                                                        #
  //##########################################################################
 
@@ -114,15 +118,19 @@ void spslidarDownloadDlg::serverClicked(){
         serverPort->setEnabled(true);
         saveButton->setEnabled(true);
     }else{
-        foreach(serverInfo info, serversInfoList){
-            if(info.getName()==choose){
+        int c = 0;
+        bool find = false;
+        while (!find && c < serversInfoList.size()) {
+            auto info = serversInfoList[c];
+            if (info.getName() == choose) {
+                find = true;
                 serverName->setText(info.getName());
                 serverIP->setText(info.getIp());
                 serverPort->setText(info.getPort());
                 server = "http://" + info.getIp() + ":" + info.getPort();
                 deleteButton->setEnabled(true);
-                break;
             }
+            ++c;
         }
     }
 }
@@ -326,10 +334,9 @@ void spslidarDownloadDlg::terminarLeerListaWorkspace()
     }else{
         QString dataBufferRaw=QString::fromStdString(dataBuffer.toStdString());
         if(!dataBufferRaw.isEmpty()){
-            QStringList workspacesRaw=dataBufferRaw.split("}");
+            QStringList workspacesRaw=dataBufferRaw.split("\n");
             workspacesRaw.removeLast();
             foreach(QString workspaceRaw, workspacesRaw){
-                workspaceRaw.append("}");
                 QJsonObject workspaceJson=QJsonDocument::fromJson(workspaceRaw.toUtf8()).object();
                 QString workspace=workspaceJson.value("name").toString();
                 qInfo(workspace.toStdString().c_str());
@@ -351,19 +358,11 @@ void spslidarDownloadDlg::terminarLeerListaDataset()
         QMessageBox::warning(this,"Error",QString("Request[Error] : %1").arg(netReply->errorString()));
         cancel();
     }else{
-        QString up="{";
-        QString down="}";
         QString dataBufferRaw=QString::fromStdString(dataBuffer.toStdString());
         if(!dataBufferRaw.isEmpty()){
-            QStringList datasetsRaw=dataBufferRaw.split("}\n{");
+            QStringList datasetsRaw=dataBufferRaw.split("\n");
+            datasetsRaw.removeLast();
             foreach(QString datasetRaw, datasetsRaw){
-                datasetRaw.remove("\n");
-                if(datasetRaw[0]!=up){
-                    datasetRaw=up+datasetRaw;
-                }
-                if(datasetRaw[datasetRaw.size()-1]!=down){
-                    datasetRaw.append(down);
-                }
                 QJsonObject datasetJson=QJsonDocument::fromJson(datasetRaw.toUtf8()).object();
                 QString dataset=datasetJson.value("name").toString();
                 qInfo(dataset.toStdString().c_str());

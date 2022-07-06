@@ -1,6 +1,40 @@
+/*****************************************************************//**
+ * @file   datasetdlg.cpp
+ * @brief  Implementation of the datasetDlg's functions
+ * 
+ * @author Alberto Beteta Fernández
+ * @date   April 2022
+ *********************************************************************/
+
+ //##########################################################################
+ //#                                                                        #
+ //#                CLOUDCOMPARE PLUGIN: SpslidarPlugin                     #
+ //#                                                                        #
+ //#  This program is free software; you can redistribute it and/or modify  #
+ //#  it under the terms of the GNU General Public License as published by  #
+ //#  the Free Software Foundation; version 2 of the License.               #
+ //#                                                                        #
+ //#  This program is distributed in the hope that it will be useful,       #
+ //#  but WITHOUT ANY WARRANTY; without even the implied warranty of        #
+ //#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         #
+ //#  GNU General Public License for more details.                          #
+ //#                                                                        #
+ //#						     COPYRIGHT:									#
+ //#					 Alberto Beteta Fernandez							#                     
+ //#				   Rafael Jesús Segura Sánchez							#
+ //#				    Antonio Jesús Rueda Ruíz							#
+ //#                  Carlos Javier Ogayar Anguita                          #
+ //#                                                                        #
+ //##########################################################################
+
 #include "datasetdlg.h"
 #include "ui_datasetdlg.h"
 
+/**
+ * @brief Constructor
+ * 
+ * @param [in] parent The parent interface of the dialog
+ */
 datasetDlg::datasetDlg(QWidget *parent) :
     QDialog(parent),
     Ui::datasetDlg()
@@ -8,6 +42,12 @@ datasetDlg::datasetDlg(QWidget *parent) :
     setupUi(this);
 }
 
+/**
+ * @brief Parameterized constructor
+ * 
+ * @param [in] datasetIn The dataset we obtain the bounding box with
+ * @param [in] parent The parent interface of the Dialog
+ */
 datasetDlg::datasetDlg(datasetDTO datasetIn, QWidget* parent) :
     QDialog(parent),
     Ui::datasetDlg()
@@ -16,11 +56,12 @@ datasetDlg::datasetDlg(datasetDTO datasetIn, QWidget* parent) :
     southEastingEdit->setText(datasetIn.getBoundingBox().getSouthWestBottom().getEasting());
     southNorthingEdit->setText(datasetIn.getBoundingBox().getSouthWestBottom().getNorthing());
     southHeightEdit->setText(datasetIn.getBoundingBox().getSouthWestBottom().getHeight());
-    southZoneEdit->setText("16N");
+    southZoneEdit->setText((datasetIn.getBoundingBox().getSouthWestBottom().getZone()));
     northEastingEdit->setText(datasetIn.getBoundingBox().getNorthEastTop().getEasting());
     northNorthingEdit->setText(datasetIn.getBoundingBox().getNorthEastTop().getNorthing());
     northHeightEdit->setText(datasetIn.getBoundingBox().getNorthEastTop().getHeight());
-    northZoneEdit->setText("16N");
+    northZoneEdit->setText(datasetIn.getBoundingBox().getNorthEastTop().getZone());
+    dataset = datasetIn;
 }
 
 datasetDlg::~datasetDlg()
@@ -38,6 +79,10 @@ void datasetDlg::setDataset(const datasetDTO &newDataset)
     dataset = newDataset;
 }
 
+/**
+ * @brief Function to create the new Dataset with correct information
+ * 
+ */
 void datasetDlg::finish()
 {
     QString name=nameEdit->text();
@@ -65,8 +110,12 @@ void datasetDlg::finish()
             QDate dateFormat(split[2].toInt(),split[1].toInt(),split[0].toInt());
             QLocale locale  = QLocale(QLocale::English, QLocale::UnitedKingdom);
             QDateTime dateAndTime(dateFormat);
-            dataset=datasetDTO(name,description, dateAndTime,datablockSize,
-                               datablockFormat,box);
+            dataset.setName(name);
+            dataset.setDescription(description);
+            dataset.setDateOfAcquisition(dateAndTime);
+            dataset.setDataBlockSize(datablockSize);
+            dataset.setDataBlockFormat(datablockFormat);
+            dataset.setBoundingBox(box);
             accept();
         }else{
             QMessageBox::warning(this,"Error",QString("Invalid date format"));
@@ -76,6 +125,11 @@ void datasetDlg::finish()
     }
 }
 
+/**
+ * @brief Check if the basic information of the dataset is valid
+ * 
+ * @return True if the information is valid, else returns false
+ */
 bool datasetDlg::checkDatasetData(){
     QString name=nameEdit->text();
     QString description=descriptionEdit->toPlainText();
@@ -88,6 +142,11 @@ bool datasetDlg::checkDatasetData(){
     return true;
 }
 
+/**
+ * @brief Check if the information of the northEastTop coord is valid
+ * 
+ * @return True if the information is valid, else returns false
+ */
 bool datasetDlg::checkDatasetNorth()
 {
     QString northEasting=northEastingEdit->text();
@@ -100,6 +159,11 @@ bool datasetDlg::checkDatasetNorth()
     return true;
 }
 
+/**
+ * @brief Check if the information of the southWestBottom coord is valid
+ * 
+ * @return True if the information is valid, else returns false
+ */
 bool datasetDlg::checkDatasetSouth()
 {
     QString southEasting=southEastingEdit->text();

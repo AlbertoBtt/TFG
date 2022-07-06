@@ -1,5 +1,38 @@
+/*****************************************************************//**
+ * @file   datasetdto.cpp
+ * @brief  Implementation of the datasetDto's functions
+ * 
+ * @author Alberto Beteta Fernández
+ * @date   April 2022
+ *********************************************************************/
+
+ //##########################################################################
+ //#                                                                        #
+ //#                CLOUDCOMPARE PLUGIN: SpslidarPlugin                     #
+ //#                                                                        #
+ //#  This program is free software; you can redistribute it and/or modify  #
+ //#  it under the terms of the GNU General Public License as published by  #
+ //#  the Free Software Foundation; version 2 of the License.               #
+ //#                                                                        #
+ //#  This program is distributed in the hope that it will be useful,       #
+ //#  but WITHOUT ANY WARRANTY; without even the implied warranty of        #
+ //#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         #
+ //#  GNU General Public License for more details.                          #
+ //#                                                                        #
+ //#						     COPYRIGHT:									#
+ //#					 Alberto Beteta Fernandez							#                     
+ //#				   Rafael Jesús Segura Sánchez							#
+ //#				    Antonio Jesús Rueda Ruíz							#
+ //#                  Carlos Javier Ogayar Anguita                          #
+ //#                                                                        #
+ //##########################################################################
+
 #include "datasetdto.h"
 
+/**
+ * @brief Default Constructor
+ * 
+ */
 datasetDTO::datasetDTO()
 {
     name="";
@@ -11,6 +44,16 @@ datasetDTO::datasetDTO()
 
 }
 
+/**
+ * @brief Parameterized constructor
+ * 
+ * @param [in] name Name of the dataset
+ * @param [in] description Description of the Dataset
+ * @param [in] dateOfAcquisition Date of Acquisition of the Dataset
+ * @param [in] dataBlockSize Size of the dataBlock
+ * @param [in] dataBlockFormat Format of the Datablock
+ * @param [in] boundingBox boundingBoxDTO of the Dataset
+ */
 datasetDTO::datasetDTO(const QString &name, const QString &description, const QDateTime &dateOfAcquisition, int dataBlockSize, const QString &dataBlockFormat, const boundingBoxDTO &boundingBox) : name(name),
     description(description),
     dateOfAcquisition(dateOfAcquisition),

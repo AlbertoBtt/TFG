@@ -1,7 +1,41 @@
+/*****************************************************************//**
+ * @file   spslidaruploaddlg.cpp
+ * @brief  Implementation of the spslidarUploadDlg class
+ * 
+ * @author Alberto Beteta Fernández
+ * @date   April 2022
+ *********************************************************************/
+
+//##########################################################################
+//#                                                                        #
+//#                CLOUDCOMPARE PLUGIN: SpslidarPlugin                     #
+//#                                                                        #
+//#  This program is free software; you can redistribute it and/or modify  #
+//#  it under the terms of the GNU General Public License as published by  #
+//#  the Free Software Foundation; version 2 of the License.               #
+//#                                                                        #
+//#  This program is distributed in the hope that it will be useful,       #
+//#  but WITHOUT ANY WARRANTY; without even the implied warranty of        #
+//#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         #
+//#  GNU General Public License for more details.                          #
+//#                                                                        #
+//#				    		     COPYRIGHT:								   #
+//#				    	 Alberto Beteta Fernandez						   #
+//#				       Rafael Jesús Segura Sánchez						   #
+//#				        Antonio Jesús Rueda Ruíz						   #
+//#                    Carlos Javier Ogayar Anguita                        #
+//#                                                                        #
+//##########################################################################
+
 #include "spslidaruploaddlg.h"
 #include "QtCore"
 #include "QMessageBox"
 
+/**
+ * @brief Default Constructor
+ * 
+ * @param [in] parent The parent interface
+ */
 spslidarUploadDlg::spslidarUploadDlg(QWidget *parent)
     : QDialog(parent)
     ,  Ui::spslidarUploadDlg()
@@ -11,6 +45,12 @@ spslidarUploadDlg::spslidarUploadDlg(QWidget *parent)
     getServers();
 }
 
+/**
+ * @brief Parameterized constructor
+ * 
+ * @param [in] dataset We will obtain the bounding box from this dataset
+ * @param [in] parent Parent interface
+ */
 spslidarUploadDlg::spslidarUploadDlg(datasetDTO dataset, QWidget* parent)
     : QDialog(parent)
     , Ui::spslidarUploadDlg()
@@ -21,6 +61,10 @@ spslidarUploadDlg::spslidarUploadDlg(datasetDTO dataset, QWidget* parent)
     getServers();
 }
 
+/**
+ * @brief Destroyer
+ * 
+ */
 spslidarUploadDlg::~spslidarUploadDlg()
 {
 
@@ -56,6 +100,10 @@ void spslidarUploadDlg::setDataset(datasetDTO dataset)
     newDatasetDTO = dataset;
 }
 
+/**
+ * @brief Function to obtain the saved servers in the local computer. If it doesn't exist, it will create a new document.
+ * 
+ */
 void spslidarUploadDlg::getServers(){
     QDir dir(QString(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)) + "\\spslidar");
     if (!dir.exists()) dir.mkpath(".");
@@ -83,6 +131,10 @@ void spslidarUploadDlg::getServers(){
     }
 }
 
+/**
+ * @brief Slot function that is executed when a server is clicked
+ * 
+ */
 void spslidarUploadDlg::serverClicked(){
     QString choose=serverList->currentItem()->text();
     serverName->setEnabled(false);
@@ -99,19 +151,27 @@ void spslidarUploadDlg::serverClicked(){
         serverPort->setEnabled(true);
         saveButton->setEnabled(true);
     }else{
-        foreach(serverInfo info, serversInfoList){
-            if(info.getName()==choose){
+        int c = 0;
+        bool find = false;
+        while (!find && c < serversInfoList.size()) {
+            auto info = serversInfoList[c];
+            if (info.getName() == choose) {
+                find = true;
                 serverName->setText(info.getName());
                 serverIP->setText(info.getIp());
                 serverPort->setText(info.getPort());
                 server = "http://" + info.getIp() + ":" + info.getPort();
                 deleteButton->setEnabled(true);
-                break;
             }
+            ++c;
         }
     }
 }
 
+/**
+ * @brief Slot function that is executed when the save button of a server is clicked
+ * 
+ */
 void spslidarUploadDlg::saveServer(){
     bool sameName=false;
     foreach(serverInfo server,serversInfoList){
@@ -137,6 +197,10 @@ void spslidarUploadDlg::saveServer(){
     }
 }
 
+/**
+ * @brief Slot function that is executed when the delete button of a server is clicked
+ * 
+ */
 void spslidarUploadDlg::deleteServer(){
     QString choose=serverList->currentItem()->text();
     for(int i=0;i<serversInfoList.count();i++){
@@ -148,6 +212,10 @@ void spslidarUploadDlg::deleteServer(){
     updateServerDocument();
 }
 
+/**
+ * @brief Auxiliar function that is executed each time a server is saved or is deleted. It save the changes in the document.
+ * 
+ */
 void spslidarUploadDlg::updateServerDocument(){
     QString rutaServers = QString(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)) + "\\spslidar\\servers.txt";
     QFile file(rutaServers);
@@ -160,6 +228,10 @@ void spslidarUploadDlg::updateServerDocument(){
     file.close();
 }
 
+/**
+ * @brief Slot function assigned to the button continue in servers page
+ * 
+ */
 void spslidarUploadDlg::serverContinue(){
 
     if(server.isEmpty()){
@@ -170,10 +242,18 @@ void spslidarUploadDlg::serverContinue(){
     }
 }
 
+/**
+ * @brief Slot function assigned to the button cancel in servers page
+ * 
+ */
 void spslidarUploadDlg::cancel(){
     this->reject();
 }
 
+/**
+ * @brief Function to set the list of workspaces from a server
+ * 
+ */
 void spslidarUploadDlg::setListWorkspaces(){
     QNetworkRequest req{QUrl(QString(server+"/spslidar/workspaces"))};
     netReply = netManager->get(req);
@@ -181,6 +261,10 @@ void spslidarUploadDlg::setListWorkspaces(){
     connect(netReply,&QNetworkReply::finished,this,&spslidarUploadDlg::finishReadingWorkspaces);
 }
 
+/**
+ * @brief Function to set the list of dataset from a workspace in a server
+ * 
+ */
 void spslidarUploadDlg::setListDatasets(){
     QNetworkRequest req{QUrl(QString(server+"/spslidar/workspaces/"+workspace+"/datasets"))};
     netReply = netManager->get(req);
@@ -188,11 +272,19 @@ void spslidarUploadDlg::setListDatasets(){
     connect(netReply,&QNetworkReply::finished,this,&spslidarUploadDlg::finishReadingDatasets);
 }
 
+/**
+ * @brief Auxiliary function to save the body of a network reply in a ByteArray
+ * 
+ */
 void spslidarUploadDlg::readMessage()
 {
     dataBuffer.append(netReply->readAll());
 }
 
+/**
+ * @brief Last part of Network Request of all the workspaces in a server, here we check the response code of the request and process the reply
+ * 
+ */
 void spslidarUploadDlg::finishReadingWorkspaces()
 {
     if(netReply->error() != QNetworkReply::NoError){
@@ -219,6 +311,10 @@ void spslidarUploadDlg::finishReadingWorkspaces()
     }
 }
 
+/**
+ * @brief Last part of Network Request of all the datasets in a workspace from a server, here we check the response code of the request and process the reply
+ * 
+ */
 void spslidarUploadDlg::finishReadingDatasets()
 {
     if(netReply->error() != QNetworkReply::NoError){
@@ -265,6 +361,10 @@ void spslidarUploadDlg::finishReadingDatasets()
     }
 }
 
+/**
+ * @brief Slot function that is executed each time a workspace is clicked
+ * 
+ */
 void spslidarUploadDlg::clickWorkspace(){
     QString item = workspacesList->currentItem()->text();
     datasetNameLine->clear();
@@ -291,14 +391,18 @@ void spslidarUploadDlg::clickWorkspace(){
             workspacesList->clearSelection();
         }else{
             workspace=item;
-            foreach(workspaceDTO workspaceInfo, workspaceDTOList){
-                if(workspaceInfo.getName()==item){
-                    workspaceNameLine->setText(workspaceInfo.getName());
+            int c = 0;
+            bool find = false;
+            while (!find && c < workspaceDTOList.size()) {
+                auto info = workspaceDTOList[c];
+                if (info.getName() == item) {
+                    find = true;
+                    workspaceNameLine->setText(info.getName());
                     workspaceDestriptionText->clear();
-                    workspaceDestriptionText->appendPlainText(workspaceInfo.getDescription());
-                    workspaceCellLine->setText(QString::number(workspaceInfo.getSize()));
-                    break;
+                    workspaceDestriptionText->appendPlainText(info.getDescription());
+                    workspaceCellLine->setText(QString::number(info.getSize()));
                 }
+                ++c;
             }
             datasetsList->clear();
             setListDatasets();
@@ -306,6 +410,10 @@ void spslidarUploadDlg::clickWorkspace(){
     }
 }
 
+/**
+ * @brief Slot function that is executed each time a dataset is clicked
+ * 
+ */
 void spslidarUploadDlg::clickDataset(){
     QString item = datasetsList->currentItem()->text();
     if(item!=nullptr){
@@ -351,21 +459,29 @@ void spslidarUploadDlg::clickDataset(){
             datasetsList->clearSelection();
         }else{
             dataset=item;
-            foreach(datasetDTO datasetInfo, datasetDTOList){
-                if(datasetInfo.getName()==item){
-                    datasetNameLine->setText(datasetInfo.getName());
+            int c = 0;
+            bool find = false;
+            while (!find && c < datasetDTOList.size()) {
+                auto info = datasetDTOList[c];
+                if (info.getName() == item) {
+                    find = true;
+                    datasetNameLine->setText(info.getName());
                     datasetDescriptionText->clear();
-                    datasetDescriptionText->appendPlainText(datasetInfo.getDescription());
-                    datasetSizeLine->setText(QString::number(datasetInfo.getDataBlockSize()));
-                    zone=datasetInfo.getBoundingBox().getSouthWestBottom().getZone();
-                    newDatasetDTO = datasetInfo;
-                    break;
+                    datasetDescriptionText->appendPlainText(info.getDescription());
+                    datasetSizeLine->setText(QString::number(info.getDataBlockSize()));
+                    zone = info.getBoundingBox().getSouthWestBottom().getZone();
+                    newDatasetDTO = info;
                 }
+                ++c;
             }
         }
     }
 }
 
+/**
+ * @brief Last part of a Network Request to upload a Workspace to the server. We check the response code and if it is accepted, we add it to the Workspaces' list
+ * 
+ */
 void spslidarUploadDlg::finishPostWorkspace(){
     if(netReply->error() != QNetworkReply::NoError){
         QMessageBox::warning(this,"Error",QString("Request[Error] : %1").arg(netReply->errorString()));
@@ -377,6 +493,10 @@ void spslidarUploadDlg::finishPostWorkspace(){
     }
 }
 
+/**
+ * @brief Last part of a Network Request to upload a Dataset to the server. We check the response code and if it is accepted, we add it to the datasets' list
+ * 
+ */
 void spslidarUploadDlg::finishPostDataset(){
     if(netReply->error() != QNetworkReply::NoError){
         QMessageBox::warning(this,"Error",QString("Some data was invalid"));
@@ -388,6 +508,10 @@ void spslidarUploadDlg::finishPostDataset(){
     }
 }
 
+/**
+ * @brief Slot function that is executed when the back button is clicked
+ * 
+ */
 void spslidarUploadDlg::comeBack(){
     workspaceNameLine->clear();
     workspaceDestriptionText->clear();
@@ -401,12 +525,23 @@ void spslidarUploadDlg::comeBack(){
     clearList();
 }
 
+/**
+ * @brief Auxiliary function to clear the lists of the plugin
+ * 
+ */
 void spslidarUploadDlg::clearList(){
     workspacesList->clear();
     datasetsList->clear();
     workspaceDTOList.clear();
+    datasetDTOList.clear();
 }
 
+/**
+ * @brief Auxiliary function to convert a date inf the format DD/MM/YYYY to the format of LocalDateTime from Java
+ * 
+ * @param date
+ * @return 
+ */
 QString spslidarUploadDlg::dateToString(QDateTime date)
 {
     QString newDate;
@@ -449,6 +584,10 @@ QString spslidarUploadDlg::dateToString(QDateTime date)
     return newDate;
 }
 
+/**
+ * @brief Slot function that is executed when the finish button is clicked.
+ * 
+ */
 void spslidarUploadDlg::finish(){
     rute=QString(server+"/spslidar/workspaces/"+workspace+"/datasets/"+dataset);
     accept();

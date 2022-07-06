@@ -1,0 +1,216 @@
+<html>
+  <head><title>SPSLiDAR</title>
+    <link rel="stylesheet" href="./style.css">
+  </head>
+  <body style="background-color:#DAE5E6; font-family:Arial, sans-serif;">
+      <div class="bar">
+        <a class="active" href="#map">Map</a>
+        <a href="#workspaces">Workspaces</a>
+        <a href="#datasets">Datasets</a>
+        <a href="#contact">Contact</a>
+        <img src="./img/banner.png" alt="banner" class="img">
+        <div class="server" id="server"></div>
+      </div>
+      <div id="mapdiv" class="mapdiv"></div>
+      <div class="overlay">
+        <button id="toggle" class="button">Select Workspaces</button>
+        <div id="listWorkspaces" class="listWorkspaces"></div>
+      </div>
+      <div class="text">
+        <div class="itemText">
+          <h1>SPSLiDAR Map</h1>
+          <p>This is the first part of the webpage to manage a SPSLiDAR server.</p>
+          <p>You can locate the datasets which are available in the server, clasificating it depeding of their workspace.</p>
+        </div>
+        <hr class="rounded">
+        <div class="itemText">
+          <h1>Page under construction</h1>
+          <p>You just can use the map functionality at the moment.</p>
+          <p>However, we are working in new functionalities.</p>
+        </div>
+        <hr class="rounded">
+        <div class="itemText">
+          <h1>More news coming soon</h1>
+          <p>More news coming soon...</p>
+        </div>
+      </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.11/lib/OpenLayers.js"></script>
+  <script src="proj4.js"></script>
+  <script>
+  const targetDiv = document.getElementById("listWorkspaces");
+    const btn = document.getElementById("toggle");
+    btn.onclick = function () {
+      if (targetDiv.style.display !== "none") {
+        targetDiv.style.display = "none";
+        targetDiv.style.pointerEvents = "none";
+      } else {
+        targetDiv.style.display = "block";
+        targetDiv.style.pointerEvents = "auto";
+      }
+    };
+  </script>
+  <script>
+  var controls;
+  controlsToUse = [
+                      new OpenLayers.Control.Navigation(), // Permite las funciones basicas de navegacion con el mouse
+                      new OpenLayers.Control.PanZoomBar(), // Controles para el manejo del Zoom y navegacion visual
+                      new OpenLayers.Control.ScaleLine(), // Escala
+                      new OpenLayers.Control.KeyboardDefaults() // Navegar en el mapa con el tecaldo
+              ];
+    map = new OpenLayers.Map("mapdiv",{controls:controlsToUse});
+    //map.addLayer(new OpenLayers.Layer.OSM());
+
+    map.addLayer(new OpenLayers.Layer.Bing({
+    name: "Satelital",
+    type: "AerialWithLabelsOnDemand",
+    key: "AkEmrj0ffNQ-YkgmzwJv-aBfxUXkFJVBISP-chXB7JduHK6ZMKdes0-dIR-gNCS9",
+  }));
+    var overlay = OpenLayers.Map
+    epsg4326 =  new OpenLayers.Projection("EPSG:4326"); //WGS 1984 projection
+    projectTo = map.getProjectionObject(); //The map projection (Spherical Mercator)
+
+    var lonLat = new OpenLayers.LonLat( -3.7781504, 37.7847808).transform(epsg4326, projectTo);
+
+
+    var zoom=2;
+    map.setCenter (lonLat, zoom);
+
+    var vectorLayer = new OpenLayers.Layer.Vector("Overlay");
+
+    var xmlhttp = new XMLHttpRequest();
+    var UrlOrigin = "http://spslidar.ujaen.local:8080";
+    document.getElementById("server").innerHTML = "Server: "+UrlOrigin;
+    var urlWorkspaces = UrlOrigin + "/spslidar/workspaces/";
+    xmlhttp.onreadystatechange = function() {
+    	if (this.readyState == 4 && this.status == 200) {
+          const array = this.responseText.split("\n");
+          array.pop();
+          createCheckbox(array);
+          listenerCheckbox();
+   	}
+    };
+
+    xmlhttp.open("GET", urlWorkspaces, true);
+    xmlhttp.setRequestHeader('Content-type', 'application/json');
+    xmlhttp.send();
+    map.addLayer(vectorLayer);
+
+    //Add a selector control to the vectorLayer with popup functions
+    var controls = {
+      selector: new OpenLayers.Control.SelectFeature(vectorLayer, { onSelect: createPopup, onUnselect: destroyPopup })
+    };
+
+    function createPopup(feature) {
+      feature.popup = new OpenLayers.Popup.FramedCloud("pop",
+          feature.geometry.getBounds().getCenterLonLat(),
+          null,
+          '<div class="markerContent">'+feature.attributes.description+'</div>',
+          null,
+          true,
+          function() { controls['selector'].unselectAll(); }
+      );
+      //feature.popup.closeOnMove = true;
+      map.addPopup(feature.popup);
+    }
+
+    function destroyPopup(feature) {
+      feature.popup.destroy();
+      feature.popup = null;
+    }
+
+    function proccessDataset(workspaceName) {
+      var xmlDataset = new XMLHttpRequest();
+      var urlDataset = UrlOrigin + "/spslidar/workspaces/" + workspaceName + "/datasets";
+      xmlDataset.onreadystatechange = function() {
+      	if (this.readyState == 4 && this.status == 200) {
+            const arrayDatasets = this.responseText.split("\n");
+            arrayDatasets.pop();
+            console.log(arrayDatasets);
+            for (const object of arrayDatasets){
+              var myDataset = JSON.parse(object);
+              addDatasetToMap(myDataset, workspaceName);
+            }
+     	}
+      };
+
+      xmlDataset.open("GET", urlDataset, true);
+      xmlDataset.setRequestHeader('Content-type', 'application/json');
+      xmlDataset.send();
+    }
+
+    function addDatasetToMap(dataset,workspace){
+      var boundingBox = dataset.boundingBox;
+      var south = boundingBox.southWestBottom;
+      var north = boundingBox.northEastTop;
+      var zone = south.zone;
+      var easting = (south.easting+north.easting)/2;
+      var northing = (south.northing+north.northing)/2;
+      var utm;
+      if(zone.includes("N")){
+        utm = "+proj=utm +zone="+zone.replace('N','');
+      }else{
+        utm = "+proj=utm +zone="+zone.replace('S','') + " +south";
+      }
+      var wgs84 = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs";
+      var datasetLatLong = proj4(utm,wgs84,[easting, northing]);
+      var date = dataset.dateOfAcquisition.split("T");
+      var dateSplited = date[0].split("-");
+      var feature = new OpenLayers.Feature.Vector(
+              new OpenLayers.Geometry.Point( datasetLatLong[0], datasetLatLong[1] ).transform(epsg4326, projectTo),
+              {description: '<strong>Workspace</strong>: ' + workspace +
+              '<br><strong>Dataset\'s Name</strong>: ' + dataset.name +
+              '<br><strong>Description</strong>: ' + dataset.description +
+              '<br><strong>Date of Adquisition</strong>: ' + dateSplited[1] + "/" + dateSplited[2] + "/" + dateSplited[0]} ,
+              {externalGraphic: 'img/marker.png', graphicHeight: 25, graphicWidth: 21, graphicXOffset:-12, graphicYOffset:-25  }
+          );
+      vectorLayer.addFeatures(feature);
+    }
+
+    function createCheckbox(optionArray){
+      console.log(optionArray);
+      for (var option in optionArray) {
+        if (optionArray.hasOwnProperty(option)) {
+            var pair = JSON.parse(optionArray[option]).name;
+            var checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.name = "workspaces";
+            checkbox.value = pair;
+            listWorkspaces.appendChild(checkbox);
+
+            var label = document.createElement('label')
+            label.htmlFor = pair;
+            label.appendChild(document.createTextNode(pair));
+
+            listWorkspaces.appendChild(label);
+            listWorkspaces.appendChild(document.createElement("br"));
+        }
+    }
+    }
+    function listenerCheckbox(){
+      // Select all checkboxes with the name 'settings' using querySelectorAll.
+      var checkboxes = document.querySelectorAll("input[type=checkbox][name=workspaces]");
+      let enabledSettings = []
+
+      checkboxes.forEach(function(checkbox) {
+        checkbox.addEventListener('change', function() {
+          enabledSettings =
+            Array.from(checkboxes) // Convert checkboxes to an array to use filter and map.
+            .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
+            .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
+
+          console.log(enabledSettings)
+          vectorLayer.destroyFeatures();
+          for( var element of enabledSettings) {
+            proccessDataset(element);
+          };
+          map.addLayer(vectorLayer);
+        })
+      });
+    }
+
+    map.addControl(controls['selector']);
+    controls['selector'].activate();
+  </script>
+
+</body>
+</html>

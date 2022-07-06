@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Spslidar Server Download</string>
+   <string>SPSLiDAR Server Download</string>
   </property>
   <widget class="QStackedWidget" name="stackedWidget">
    <property name="geometry">
@@ -376,7 +376,7 @@
       <rect>
        <x>260</x>
        <y>40</y>
-       <width>251</width>
+       <width>260</width>
        <height>41</height>
       </rect>
      </property>

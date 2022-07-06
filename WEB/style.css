@@ -1,0 +1,118 @@
+.button {
+  position: absolute;
+  bottom: 2%;
+  right: 2%;
+  height: 5%;
+  pointer-events:auto;
+}
+
+.overlay {
+  position: absolute;
+  left: 2%;
+  top: 8%;
+  height: 90%;
+  width: 60%;
+  z-index: 2;
+  pointer-events:none;
+}
+
+.mapdiv{
+  position: absolute;
+  left: 3%;
+  top: 8%;
+  height: 90%;
+  width: 60%;
+  z-index: 1;
+  pointer-events:auto;
+}
+
+.text{
+  position: absolute;
+  top: 8%;
+  right: 3%;
+  min-height: 90%;
+  width: 33%;
+  background-color: #C4C8C9;
+  border-radius: 25px;
+}
+
+.listWorkspaces{
+  overflow-y:auto;
+  max-height: 100px;
+  width: 30%;
+  background-color:white;
+  display: auto;
+  position: absolute;
+  bottom: 9%;
+  right: 2%;
+  pointer-events:auto;
+  font-size: 90%;
+}
+
+.bar{
+  height: 5%;
+  width: 98%;
+  position: relative;
+  top: 1%;
+  left: 1%;
+  right: 1%;
+  background-color: #ACB2B3;
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.img{
+  float: right;
+  height: 100%;
+}
+
+.server{
+  float: right;
+  text-align: center;
+  padding: 0.7% 1%;
+  background-color: green;
+  color: white;
+}
+
+/* Style the links inside the navigation bar */
+.bar a {
+  float: left;
+  color: black;
+  text-align: center;
+  padding: 0.7% 1%;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+/* Change the color of links on hover */
+.bar a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+/* Add a color to the active/current link */
+.bar a.active {
+  background-color: green;
+  color: white;
+}
+
+.itemText h1{
+  text-align: center;
+}
+
+.itemText{
+  position: relative;
+  left: 3%;
+  right: 3%;
+  width: 98%;
+}
+
+hr.rounded {
+  position: relative;
+  border-top: 5px solid #bbb;
+  border-radius: 5px;
+  border-color: green;
+  background-color: green;
+  top: 1%;
+  bottom: 1%;
+}

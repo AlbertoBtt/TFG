@@ -1,6 +1,14 @@
+/*****************************************************************//**
+ * @file   SpslidarPlugin.cpp
+ * @brief  Implementation of the main class from the plugin
+ * 
+ * @author Alberto Beteta Fernández
+ * @date   April 2022
+ *********************************************************************/
+
 //##########################################################################
 //#                                                                        #
-//#                CLOUDCOMPARE PLUGIN: ExamplePlugin                      #
+//#                CLOUDCOMPARE PLUGIN: SpslidarPlugin                     #
 //#                                                                        #
 //#  This program is free software; you can redistribute it and/or modify  #
 //#  it under the terms of the GNU General Public License as published by  #
@@ -11,33 +19,22 @@
 //#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         #
 //#  GNU General Public License for more details.                          #
 //#                                                                        #
-//#                             COPYRIGHT: XXX                             #
+//#							     COPYRIGHT:								   #
+//#						 Alberto Beteta Fernandez						   #                     
+//#					   Rafael Jesús Segura Sánchez						   #
+//#					     Antonio Jesús Rueda Ruíz						   #
+//#				       Carlos Javier Ogayar Anguita                        #
 //#                                                                        #
 //##########################################################################
-
-// First:
-//	Replace all occurrences of 'ExamplePlugin' by your own plugin class name in this file.
-//	This includes the resource path to info.json in the constructor.
-
-// Second:
-//	Open ExamplePlugin.qrc, change the "prefix" and the icon filename for your plugin.
-//	Change the name of the file to <yourPluginName>.qrc
-
-// Third:
-//	Open the info.json file and fill in the information about the plugin.
-//	 "type" should be one of: "Standard", "GL", or "I/O" (required)
-//	 "name" is the name of the plugin (required)
-//	 "icon" is the Qt resource path to the plugin's icon (from the .qrc file)
-//	 "description" is used as a tootip if the plugin has actions and is displayed in the plugin dialog
-//	 "authors", "maintainers", and "references" show up in the plugin dialog as well
 
 #include "SpslidarPlugin.h"
 #include "ActionA.h"
 
-
-// Default constructor:
-//	- pass the Qt resource path to the info.json file (from <yourPluginName>.qrc file) 
-//  - constructor should mainly be used to initialize actions and other members
+/**
+ * @brief Default Constructor of SpslidarPlugin
+ * 
+ * @param [in] parent Parent interface
+ */
 SpslidarPlugin::SpslidarPlugin( QObject* parent/*=nullptr*/)
 	: QObject( parent )
 	, ccStdPluginInterface( ":/CC/plugin/SpslidarPlugin/info.json" )
@@ -46,28 +43,31 @@ SpslidarPlugin::SpslidarPlugin( QObject* parent/*=nullptr*/)
 {
 }
 
-// This method should enable or disable your plugin actions
-// depending on the currently selected entities ('selectedEntities').
+/**
+ * @brief Slot to modify the activation/desactivation of the plugin's actions. It is executed every time the selection of entities in CloudCompare change.
+ * 
+ * @param selectedEntities
+ */
 void SpslidarPlugin::onNewSelection( const ccHObject::Container &selectedEntities )
 {
 	m_actionUpload->setEnabled( !selectedEntities.empty() );
 	m_actionDownload->setEnabled( true );
 }
 
-// This method returns all the 'actions' your plugin can perform.
-// getActions() will be called only once, when plugin is loaded.
+/**
+ * @brief Start function that intialice the actions of the plugin
+ * 
+ * @return 
+ */
 QList<QAction *> SpslidarPlugin::getActions()
 {
 	QList<QAction*> group;
 	if ( !m_actionDownload )
 	{
-		// Here we use the default plugin name, description, and icon,
-		// but each action should have its own.
-		m_actionDownload = new QAction( "Spslidar Download", this );
-		m_actionDownload->setToolTip( "Spslidar Download Tool" );
+		m_actionDownload = new QAction( "SPSLiDAR Download", this );
+		m_actionDownload->setToolTip( "SPSLiDAR Download Tool" );
 		m_actionDownload->setIcon(QIcon(QString::fromUtf8(":/CC/plugin/SpslidarPlugin/images/download.png")));
 		
-		// Connect appropriate signal
 		connect(m_actionDownload, &QAction::triggered, this, [this]()
 			{
 				Spslidar::performActionDownload(m_app);
@@ -76,13 +76,10 @@ QList<QAction *> SpslidarPlugin::getActions()
 	group.push_back(m_actionDownload);
 	if (!m_actionUpload)
 	{
-		// Here we use the default plugin name, description, and icon,
-		// but each action should have its own.
-		m_actionUpload = new QAction("Spslidar Upload", this);
-		m_actionUpload->setToolTip("Spslidar Upload Tool");
+		m_actionUpload = new QAction("SPSLiDAR Upload", this);
+		m_actionUpload->setToolTip("SPSLiDAR Upload Tool");
 		m_actionUpload->setIcon(QIcon(QString::fromUtf8(":/CC/plugin/SpslidarPlugin/images/upload.png")));
 
-		// Connect appropriate signal
 		connect(m_actionUpload, &QAction::triggered, this, [this]()
 			{
 				Spslidar::performActionUpload(m_app);

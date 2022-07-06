@@ -1,12 +1,40 @@
 {
 	"type" : "Standard",
-	"name" : "Spslidar Plugin",
+	"name" : "SPSLiDAR Plugin",
 	"icon" : ":/CC/plugin/SpslidarPlugin/images/icon.png",
-	"description": "Plugin for download and upload clouds from Spslidar Server",
+	"description": "Plugin for download and upload clouds from SPSLiDAR Server",
 	"authors" : [
 		{
 			"name" : "Alberto Beteta Fernández",
-			"email" : "albertobtt99@gmail.com"
+			"email" : "abeteta@ujaen.es"
+		},
+		{
+			"name" : "Rafael Jesús Segura Sánchez",
+			"email" : "rsegura@ujaen.es"
+		},
+		{
+			"name" : "Antonio Jesús Rueda Ruíz",
+			"email" : "ajrueda@ujaen.es"
+		},
+		{
+			"name" : "Carlos Javiar Ogayar Anguita",
+			"email" : "cogayar@ujaen.es"
+		}
+	],
+	"maintainers" : [
+		{
+			"name" : "Alberto Beteta Fernández",
+			"email" : "abeteta@ujaen.es"
+		}
+	],
+	"references" : [
+		{
+			"text" : "Universidad de Jaén",
+			"url" : "https://www.ujaen.es"
+		},
+		{
+			"text" : "SPSLiDAR: towards a multi-purpose repository for large scale LiDAR datasets",
+			"url" : "https://www.tandfonline.com/eprint/YQIWWFE2FZXVKXHQCYQU/full?target=10.1080/13658816.2022.2030479"
 		}
 	]
 }

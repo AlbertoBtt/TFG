@@ -8,7 +8,7 @@
 
  //##########################################################################
  //#                                                                        #
- //#                CLOUDCOMPARE PLUGIN: SpslidarServerDownloadPlugin       #
+ //#                CLOUDCOMPARE PLUGIN: SpslidarPlugin                     #
  //#                                                                        #
  //#  This program is free software; you can redistribute it and/or modify  #
  //#  it under the terms of the GNU General Public License as published by  #
@@ -19,7 +19,11 @@
  //#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         #
  //#  GNU General Public License for more details.                          #
  //#                                                                        #
- //#                   COPYRIGHT: Universidad de Jaen                       #
+ //#						     COPYRIGHT:									#
+ //#					 Alberto Beteta Fernandez							#                     
+ //#				   Rafael Jesús Segura Sánchez							#
+ //#				    Antonio Jesús Rueda Ruíz							#
+ //#                  Carlos Javier Ogayar Anguita                          #
  //#                                                                        #
  //##########################################################################
 
